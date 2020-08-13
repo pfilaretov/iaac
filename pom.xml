@@ -13,8 +13,10 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>iaac</name>
 	<description>Infrastructure as a code example</description>
+	<packaging>jar</packaging>
 
 	<properties>
+		<!-- TODO - update to Java 14 -->
 		<java.version>1.8</java.version>
 	</properties>
 
