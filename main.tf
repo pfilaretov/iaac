@@ -1,9 +1,7 @@
 provider "aws" {
-  profile = "default"
-  // TODO - region???
-  region = "???"
-  // TODO - create
-  shared_credentials_file = "C:/users/petr_filaretov/.aws/credentials"
+  region = "eu-west-1"
+  shared_credentials_file = "%userprofile%/.aws/credentials"
+  profile = "pf"
 }
 
 resource "aws_security_group" "ssh" {
@@ -13,6 +11,12 @@ resource "aws_security_group" "ssh" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -34,26 +38,20 @@ resource "aws_security_group" "http" {
   }
 }
 
-// TODO - ami???
 resource "aws_instance" "iaac-example" {
-  // TODO - which ami???
-  ami = "ami-???"
-  // TODO - t2 or t3? What does that mean?
+  // CentOS 7
+  ami = "ami-0b850cf02cc00fdc8"
   instance_type = "t2.micro"
-  // TODO - what is this?
-  key_name = "test2"
-  // TODO - syntax error?
-//  user_data = file("./start.sh")
+  key_name = "iaac_key_pair"
+  user_data = file("./start.sh")
 
   connection {
-    host = self.public_ip
     type = "ssh"
-    // TODO - ???
-    user = "ubuntu"
-    // TODO - create key? syntax error?
-//    private_key = file("./test2.pem")
+    host = self.public_ip
+    user = "centos"
+    private_key = file("%userprofile%/.aws/iaac_key_pair.ppk")
     agent = false
-    timeout = "1m"
+    timeout = "5m"
   }
 
   security_groups = ["iaac_security_group_ssh", "iaac_security_group_http"]
