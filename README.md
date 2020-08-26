@@ -9,14 +9,18 @@ It will create
 ## How to run
 
 1) Install AWS CLI
-1) Configure it:
+1) Configure it with IAM user who has permissions to create EC2 instances and security groups:
     ```
     aws configure --profile pf
     ```
 1) Make sure the configuration is saved to `%userprofile%/.aws/credentials`
 1) Create AWS Key Pair (via AWS Console) with the following name: `iaac_key_pair`
 1) Save private key as `%userprofile%/.aws/iaac_key_pair.ppk`
-1) Run terraform which will show the plan and ask for confirmation:
+1) Initialise Terraform:
+    ```
+    terraform init
+    ```
+1) Apply terraform script which will show the plan and ask for confirmation:
     ```
     terraform apply
     ```
